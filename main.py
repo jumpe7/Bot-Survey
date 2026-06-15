@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 from aiogram.filters import CommandStart
 from aiogram.types import Message
-from aiogram.client.session.aiohttp import AiohttpSession
 
 
 dp = Dispatcher()
@@ -24,7 +23,7 @@ async def echo_handler(message: Message):
 async def main():
     load_dotenv()
     tg_tok = getenv("TOKEN")
-    bot = Bot(token=tg_tok, session=session)
+    bot = Bot(token=tg_tok)
     print('Бот запущен!')
     await dp.start_polling(bot)
 
