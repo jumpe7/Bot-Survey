@@ -4,7 +4,7 @@ from os import getenv
 from dotenv import load_dotenv
 from aiogram import Bot, Dispatcher
 
-from start import start as start_router
+from start import router as start_router
 
 
 async def main():
