@@ -2,13 +2,22 @@ from aiogram import Router
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 
-from session import session
+from database import Session
+from models import User
 
 router = Router()
 
 @router.message(CommandStart())
 async def start(message: Message):
     user_id = message.from_user.id
+
+    async with Session() as session:
+        user = await session.get(User, user_id)
+
+        if not user:
+            session.add(User(telegram_id=user_id))
+            await session.commit()
+
     bot_username = (await message.bot.get_me()).username
     link = (
         f'https://t.me/'
@@ -23,13 +32,3 @@ async def start(message: Message):
         f'\n{link}\n\n'
         '💬 Через неё тебе смогут писать анонимно.'
     )
-
-    args = message.text.split()
-    if len(args) < 1:
-        owner_id = int(args[1])
-        session[user_id] = owner_id
-
-        await message.answer(
-            "Напишите анонимное сообщение"
-        )
-        return
