@@ -17,4 +17,7 @@ async def anonymous_entry(message: Message, state: FSMContext):
 
     await state.update_data(receiver_id=receiver_id)
 
+    await state.set_state(AskState.waiting_message)
+
+
     await message.answer('Напишите анонимное сообщение')
