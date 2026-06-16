@@ -1,5 +1,5 @@
 from aiogram import Router
-from aiogram.filters import CommandStart
+from aiogram.filters import CommandStart, CommandObject
 from aiogram.fsm.context import FSMContext
 
 from aiogram.types import Message
@@ -8,12 +8,16 @@ from session import AskState
 
 router = Router()
 
-@router.message(CommandStart, deep_link=True)
-async def anonymous_entry(message: Message, state: FSMContext):
-    args = message.text.split()
-    if len(args) < 2:
+@router.message(CommandStart)
+async def anonymous_entry(message: Message, state: FSMContext, command: CommandObject):
+    if not command.args:
         return
-    receiver_id = int(args[1])
+
+    try:
+        receiver_id = int(command.args)
+    except ValueError:
+        await message.answer('Некорректная ссылка')
+        return
 
     await state.update_data(receiver_id=receiver_id)
 
