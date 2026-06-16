@@ -9,7 +9,7 @@ class Base(DeclarativeBase):
 class User(Base):
     __tablename__ = 'users'
     telegram_id = Column(BigInteger, primary_key=True)
-    username = Column(Text, nullable=True)
+    # username = Column(Text, nullable=True)
 
     created_at = Column(DateTime, default=func.now(), nullable=False)
 
